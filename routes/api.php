@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/users', [UserController::class, 'showAll']);
+Route::get('/users/{id}', [UserController::class, 'showById']);
+Route::post('/users', [UserController::class, 'create']);
+Route::put('/users/{id}', [UserController::class, 'updateById']);
+Route::delete('/users/{id}', [UserController::class, 'deleteById']);
+
