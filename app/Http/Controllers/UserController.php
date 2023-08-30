@@ -9,13 +9,13 @@ class UserController extends Controller
 {
     public function showAll()
     {
-        $users = User::all();
+        $users = User::where('is_deleted', false)->get();
         return response()->json($users);
     }
 
     public function showById($id)
     {
-        $user = User::find($id);
+        $user = User::where('is_deleted', false)->find($id);
         if (!empty($user)) {
             return response()->json($user);
         }
@@ -52,7 +52,7 @@ class UserController extends Controller
 
     public function updateById(Request $request, $id)
     {
-        if (User::where('id', $id)->exists()) {
+        if ($user = User::where('id', $id)->where('is_deleted', false)->exists()) {
             try {
                 $request->validate([
                     'nume'         => 'sometimes|required|string|max:255',
@@ -87,9 +87,11 @@ class UserController extends Controller
 
     public function deleteById($id)
     {
-        if (User::where('id', $id)->exists()) {
-            $user = User::find($id);
-            $user->delete();
+        if (User::where('id', $id)->where('is_deleted', false)->exists()) {
+            $user             = User::find($id);
+            $user->is_deleted = true;
+
+            $user->save();
 
             return response()->json(['message' => 'User deleted'], 202);
         }

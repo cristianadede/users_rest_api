@@ -16,7 +16,8 @@ class User extends Model
         'email',
         'parola',
         'cnp',
-        'data_nastere'
+        'data_nastere',
+        'is_deleted'
     ];
 
 }
