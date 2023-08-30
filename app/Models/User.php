@@ -20,4 +20,8 @@ class User extends Model
         'is_deleted'
     ];
 
+    public function apiTokens()
+    {
+        return $this->hasMany(ApiToken::class);
+    }
 }
